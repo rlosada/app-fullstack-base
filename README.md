@@ -35,14 +35,11 @@ Continua con la descarga del código cuando tengas las dependencias instaladas y
 
 ### Descargar el código
 
-Para descargar el código, lo más conveniente es que realices un `fork` de este proyecto a tu cuenta personal haciendo click en [este link](https://github.com/gotoiot/app-fullstack-base/fork). Una vez que ya tengas el fork a tu cuenta, descargalo con este comando (acordate de poner tu usuario en el link):
+Para descargar el código, usar el comando siguiente:
 
 ```
-git clone https://github.com/USER/app-fullstack-base.git
+git clone https://github.com/rlosada/app-fullstack-base.git
 ```
-
-> En caso que no tengas una cuenta en Github podes clonar directamente este repo.
-
 ### Ejecutar la aplicación
 
 Para ejecutar la aplicación tenes que correr el comando `docker-compose up` desde la raíz del proyecto. Este comando va a descargar las imágenes de Docker de node, de typescript, de la base datos y del admin de la DB, y luego ponerlas en funcionamiento. 
@@ -135,6 +132,9 @@ En la siguiente ilustración podés ver cómo está organizado el proyecto para 
 │   │   ├── mysql-connector.js  # codigo de conexion a la base de datos
 │   │   ├── package.json        # configuracion de proyecto NodeJS
 │   │   └── package-lock.json   # configuracion de proyecto NodeJS
+│   │   └── routes              # codigo que procesa las requests HTTP soportadas
+│   │   └── common.js           # codigo y definiciones comunes 
+│   │   └── logger.js           # codigo utilizado para generar los mensajes de log
 │   └── frontend                # directorio para el frontend de la aplicacion
 │       ├── js                  # codigo javascript que se compila automáticamente
 │       ├── static              # donde alojan archivos de estilos, imagenes, fuentes, etc.
@@ -158,39 +158,123 @@ En esta sección podés ver los detalles específicos de funcionamiento del cód
 
 ### Agregar un dispositivo
 
-Completá los pasos para agregar un dispositivo desde el cliente web.
+Para agregar un nuevo dispositivo en la pantalla principal hacer click en el boton '+Agregar', esto presentara
+un formulario que hay que completar y luego para confirmar la creacion hacer click en el boton 'Crear'. Esto
+lanzara el proceso de creación del dispositivo y luego la pagina se refrescara volviendo a mostrar el listado
+completo de dispositivos donde si todo salio bien aparecera listado el nuevo dispositivo. En caso de que se desee
+cancelar la operacion en vez de hacer click en 'Crear' hacerlo en 'Cancelar' lo que volvera a mostrar la lista
+de dispositivos existente.
+
+### Eliminar un dispositivo
+
+Para eliminar un dispositivo existente solo hacer click en el boton 'Eliminar' ubicado a la derecha del dispositivo
+que se desea eliminar. No existe confirmacion con lo cual una vez hecho el click la orden se ejecuta  y el dispositivo
+se elimina. Luego la pantalla se refrescara mostrando los dispositivos restantes en la base.
+
+### Editar un dispositivo
+
+Para editar un dispositivo existente en la pantalla principal hacer click en el boton 'Editar' ubicado a la derecha del dispositivo
+que se desea editar. Esto mostrara un formulario ya inicializado con los datos del dispositivo seleccionado. Realizar los
+cambios necesarios y luego hacer click en 'Aplicar' para confirmar los cambio o 'Cancelar' para cancelar. En cualquiera de los dos
+casos luego se vuelve automaticamente a la pantalla principal donde se listaran todos los dispositivos existentes.
+
 
 ### Frontend
 
-Completá todos los detalles sobre cómo armaste el frontend, sus interacciones, etc.
+El Frontend consta de dos pantalla. La primera es la que se carga inicialmente y muestra la lista de dispositivos recuperados del 
+backend. Cada uno de los elementos de esta lista presenta dos botones para interactuar. 'Editar' que permite editar los valores del
+dispositivo y 'Eliminar' que permite eliminar el dispositivo del backend.
+
+La segunda pantalla es la usada para completar los datos de un dispositivo a crear o bien para editar los datos de un dispositivo existente.
+En esta pantalla apareceran botones para 'Crear|Aplicar' o 'Cancelar'. En el primer caso se crea el dispositivo o se editan sus valores en
+el backend y el segundo caso la operacion es cancelada y se vuelve a la lista de dispositivos.
 
 ### Backend
 
-Completá todos los detalles de funcionamiento sobre el backend, sus interacciones con el cliente web, la base de datos, etc.
+El backend implementa 5 endpoints que permiten recuperar los dispositivos de la base de datos, insertar nuevos dispositivos, actualizar dispositivos
+existente y eliminar dispositivos existentes.
 
 <details><summary><b>Ver los endpoints disponibles</b></summary><br>
 
 Completá todos los endpoints del backend con los metodos disponibles, los headers y body que recibe, lo que devuelve, ejemplos, etc.
 
-1) Devolver el estado de los dispositivos.
+1) Endpoint : GET /devices
 
-```json
+Recupera la lista de dispositivos de la base de datos. El formato devuelto es un string que contiene un json. En dicho json habra un arreglo de dispositivos. Si no hay entradas
+en la tabla se devuelve un arreglo vacio. A continuacion un ejemplo:
+
+```
+[
+    {"id": 8, "name":"Lampara", "description":"Lampara en el living", "state":1, "type":2},
+    {"id":10, "name":"Lampara101","description":"esta es la lampara que esta ubicada en la habitacion que contiene los floreros","state":1,"type":2},
+    {"id":11, "name":"aire acondicionado","description":"este es el aire acondicionado del living","state":0,"type":1}
+]
+```
+
+2) Endpoint : GET /devices/:id
+
+Es un caso especial del anterior, aqui se devuevle un arreglo que solo contiene el elemento cuyo id coincide con el de la tabla Devices de la base de datos. Si no hay concidencia
+se devuelve un arreglo vacio.
+
+```
+[
+    {"id": 8, "name":"Lampara", "description":"Lampara en el living", "state":1, "type":2},
+]
+```
+
+3) Endpoint : DELETE /devices/:id
+
+En este caso esta solicitud provoca que el backend elimine el dispositivo cuyo id coincide con el de la tabla Devices de la base. Si la eliminacion fue satisfactoria se devuelve un json que contiene el id eliminado. Si el dispositivo no existe, igualmente la respuesta es la misma. Si hay un error se devuelve un '500 Interal Server Error'.
+
+```
 {
-    "method": "get",
-    "request_headers": "application/json",
-    "request_body": "",
-    "response_code": 200,
-    "request_body": {
-        "devices": [
-            {
-                "id": 1,
-                "status": true,
-                "description": "Kitchen light"
-            }
-        ]
-    },
+    "id": "8"
 }
-``` 
+```
+
+4) Endpoint : POST /devices/
+
+En este caso esta solicitud provoca que el backend cree un nuevo dispositivo en la tabla Devices. El content-type debera ser de tipo 'application/json' y el contenido del body debera
+ser un objeto tipo device valido. A continuacion un ejemplo:
+
+```
+{
+  "name" : "Televisor",
+  "description" : "televisor ubicado en el comedor",
+  "state" : 1,
+  "type" : 0
+}
+```
+Si el json esta mal formado o bien el content-type es incorrecto se devolvera un '404 Bad Request', si en cambio ocurre algun error interno '500 Interal Server Error'. Si todo funciona 
+se devolvera un '2OO Ok' y un json con el id asigando al nuevo dispositivo en la base tal y como se muestra en el ejemplo a continuacion:
+
+```
+{
+    "id": "8"
+}
+```
+
+4) Endpoint : PATCH /devices/:id
+
+En este caso esta solicitud provoca que el backend edite un dispositivo existente en la tabla Devices. El content-type debera ser de tipo 'application/json' y el contenido del body debera
+ser un objeto tipo device valido. El id en la ruta identifica el dispositivo a editar. A continuacion un ejemplo:
+
+```
+{
+  "name" : "Televisor",
+  "description" : "televisor ubicado en el comedor",
+  "state" : 1,
+  "type" : 0
+}
+```
+Si el json esta mal formado o bien el content-type es incorrecto se devolvera un '404 Bad Request', si en cambio ocurre algun error interno '500 Interal Server Error'. Si todo funciona 
+se devolvera un '2OO Ok' y un json con el id del dispositivo editado en la base tal y como se muestra en el ejemplo a continuacion:
+
+```
+{
+    "id": "8"
+}
+```
 
 </details>
 

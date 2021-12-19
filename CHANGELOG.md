@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## 3.0.0
+
+* Project modification
+    * Implementa para el backend el soporte para recuperar todos los dispositivos de la base de datos
+    * Implementa para el backend el soporte para recuperar un dispositivo especifico de la base de datos
+    * Implementa para el backend el soporte crear un nuevo dispositivo en la base de datos
+    * Implementa para el backend el soporte eliminar un dispositivo existente de la base de datos
+    * Implementa para el backend el soporte editar un dispositivo existente en la base de datos
+    * Implementa para el front la logica para listar los dipositivos devueltos por el backend
+    * Implementa para el front la logica para crear un nuevo dispositivo en el backend
+    * Implementa para el front la logica para editar un dispositivo existente en el backend
+    * Implementa para el front la logica para eliminar un dispositivo existente en el backend
+
+
 ## 2.2.0
 
 * Project modification
