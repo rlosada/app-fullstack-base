@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## 3.0.2
+* Project modification
+    * Modifica docker-compose.yml para instalar dependencias de backend antes de arrancar
+
+
 ## 3.0.1
 * Project modification
     * Se agrega en el README.md la seccion "Lanzar la aplicacion" donde se explica como lanzar la aplicacion
