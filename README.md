@@ -50,6 +50,8 @@ Si pudiste acceder al cliente web y al administrador significa que la aplicació
 
 > Si te aparece un error la primera vez que corres la app, deteńe el proceso y volvé a iniciarla. Esto es debido a que el backend espera que la DB esté creada al iniciar, y en la primera ejecución puede no alcanzar a crearse. A partir de la segunda vez el problema queda solucionado.
 
+
+
 </details>
 
 Continuá explorando el proyecto una vez que lo tengas funcionando.
@@ -75,6 +77,34 @@ Al iniciar el servicio de la base de datos, si esta no está creada toma el arch
 En ese archivo está la configuración de la tabla `Devices` y otras configuraciones más. Si quisieras cambiar algunas configuraciones deberías modificar este archivo y crear nuevamente la base de datos para que se tomen en cuenta los cambios.
 
 Tené en cuenta que la base de datos se crea con permisos de superusuario por lo que no podrías borrar el directorio con tu usuario de sistema, para eso debés hacerlo con permisos de administrador. En ese caso podés ejecutar el comando `sudo rm -r db/data` para borrar el directorio completo.
+
+### Lanzar la aplicacion
+
+Una vez descargada la aplicacion en el host donde la misma será ejecutada es preciso realizar los siguientes pasos:
+
+1) Instalar dependencias:
+
+```
+cd app-fullstack-base/src/backend
+npm install
+```
+Al proyecto orinal se le agrego una dependencia adicional, status-code-enum. 
+
+2) Editar la URL del backend a utilizar. El valor asignado debera ser la ip del host donde se corra la aplicacion. Para ello abrir el archivo app-fullstack-base/src/frontend/common.ts
+y editar la linea 32.
+
+```
+const BACKEND_URL = 'http://192.168.0.2:8000';
+```
+
+En este caso la ip 192.168.0.2 es la ip donde se va a hostear la aplicacion.
+
+3) Finalemente lanzar la aplicacion (los pasos 1 y 2 solo deberan hacerse una vez):
+
+```
+cd app-fullstack-base
+docker-compose up
+```
 
 </details>
 
