@@ -1,15 +1,16 @@
 /*------------------------------------------------------------------*
- * main.ts														    *
+ * logger.ts														*
  *																	*
  * Historico:	07/12/2021	Primer version							*
  *																	*
- * Entry point de la aplicacion                                     *
+ * Implementa logger                                                *
  *------------------------------------------------------------------*/
 
  /*------------------------------------------------------------------*
- * init()									                        *
+ * logger(f, msg)									                *
  *																	*
- * Entrada:		No posee                                            *
+ * Entrada:		f           Nombre de la funcion                    *
+ *              msg         Mensaje                                 *
  *																	*
  * Salida:		No posee                                            *
  *																	*
@@ -17,25 +18,18 @@
  *																	*
  * Descripcion:														*
  *																	*
- * Inicializacion de la aplicacion front                            *
+ * Imprime un mensaje en la consola utilizando un formateo especial *
  *------------------------------------------------------------------*/
 
-function init()
-{
-    let f = init.name;
-    let n = '';
-
-    logger(init.name, 'Application initialization started');
-
-    materialize();
-
-    return showAppPage1();
-   
-}
-
-// Cuando se termina de cargar los archivos se ejecuta esta funcion
-window.onload = () => 
-{
-   init();
-}
-
+ function logger(f : string, msg : string)
+ {
+    let max_size = 50;
+    let m = `${new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')} | ${f}`
+    let n = m.length;
+    for(let i = 0; i < max_size - n; i++) 
+        m = `${m} `;
+    m = `${m} | ${msg}`;
+    console.log(m);
+ }
+ 
+ 

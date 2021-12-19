@@ -12,25 +12,22 @@
             <nav style="background-color:#124580">
                 <div class="nav-wrapper">
                     <a href="#!" class="brand-logo left" style="margin-left: 15px;">Smart Home</a>
-                    <ul id="nav-mobile" class="right" style="margin-right: 15px;">
-                        <li><a href="#">Help</a></li>
-                    </ul>
                 </div>
             </nav>	
             <!-- Page Body -->
-            <div class="container">
-                <br/>
-                <h3>Smart Home Web Client!</h3>
-                <br/>
-                <div class="row">
-                    <div class="input-field col s12 m12 l12 xl12">
-                        <textarea id="textarea_1" class="materialize-textarea" style="height: 150px;" readonly></textarea>
+            <div class="container" id="body">
+                    <div id="titulo">
+                        <!-- Espacio para titulo -->
                     </div>
-                    <div class="col s4 m4 l2 xl2">
-                        <button class="btn waves-effect waves-light button-view" onclick="SayHello();" name="hello_button">PRESS ME</button>
+                    <div id="primaria">
+                        <!-- Espacio para listado de dispositivos o formulario para agregar/editar-->    
+                    </div>	
+                    <div id="secundaria">
+                        <!-- Espacio para el resto del formulario para agregar-->
+                    </div>	
+                    <div id="terciaria">
+                        <!-- Espacio para los botones Agregar o para confirmar la creacion/edicion de un dispositivo-->
                     </div>
-                </div>
-            </div>	
         </main>
 		<!-- Page Footer -->
         <footer class="page-footer" style="background-color:#124580">
@@ -38,21 +35,34 @@
                 <div class="row">
                     <div class="col l6 s6">
                         <h5 class="white-text">Smart Home</h5>
-                        <p class="grey-text text-lighten-4">Copyright ### - 2021</p>
+                        <p class="grey-text text-lighten-4">Copyright Ricardo Losada - 2021</p>
                     </div>
                     <div class="col l6 s6">
                         <h5 class="white-text right-align">Contact</h5>
                         <p class="white-text right-align">
-                            <a class="grey-text text-lighten-3" href="!#">Email | </a>
-                            <a class="grey-text text-lighten-3" href="!#">Twitter | </a>
-                            <a class="grey-text text-lighten-3" href="!#">LinkedIn</a>
+                            <a class="grey-text text-lighten-3" href="mailto:losadaricardo59@gmail.com">Email | </a>
+                            <a class="grey-text text-lighten-3" href="https://www.linkedin.com/in/losadaricardo/">LinkedIn</a>
                         </p>
                     </div>
                 </div>
             </div>
         </footer>
 		<!--JavaScript at end of body for optimized loading-->
-		<script type="text/javascript" src="js/materialize.min.js"></script>
-		<script type="text/javascript" src="js/main.js"></script>
+		<script type="text/javascript" src="static/js/materialize.min.js"></script>
+        <script type="text/javascript" src="js/app-page-1.js"></script>   
+        <script type="text/javascript" src="js/app-page-2.js"></script>   
+        <script type="text/javascript" src="js/common.js"></script>   
+        <script type="text/javascript" src="js/create-device.js"></script>     
+        <script type="text/javascript" src="js/delete-device.js"></script>     
+        <script type="text/javascript" src="js/device.js"></script>
+        <script type="text/javascript" src="js/get-device.js"></script>     
+        <script type="text/javascript" src="js/html-elements.js"></script>     
+        <script type="text/javascript" src="js/http-requests.js"></script>  
+        <script type="text/javascript" src="js/logger.js"></script>        
+        <script type="text/javascript" src="js/main.js"></script>
+        <script type="text/javascript" src="static/js/mat-init.js"></script> <!-- Se incluye un archivo NO compilado con el tsc  --> 
+        <script type="text/javascript" src="js/misc.js"></script>
+        <script type="text/javascript" src="js/update-device.js"></script>     
+        <script type="text/javascript" src="js/user-interactions.js"></script>
     </body>
   </html>
