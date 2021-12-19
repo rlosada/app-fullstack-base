@@ -1,38 +1,54 @@
 version: '3'
 
 services:
-
+    # Compilador typescript
+    # Es un contenedor que tiene mapeadas dos carpetas y corriendo permanentemente
+    # el tsc mirando si la carpeta origen cambio y si eso sucede recompila y envia
+    # el resultado a la carpeta destino
+    #
+    # origen  : carpeta del proyecto donde estan los typescript
+    # destino : carpeta del proyecto donde estan los javascript que luego carga el usuario
     ts-compiler:
         image:                   harmish/typescript
         volumes:
             -                    ./src/frontend/ts:/workspace 
             -                    ./src/frontend/js:/output 
-        command:                 "tsc --project /workspace --outDir /output --watch --pretty true"
+            -                    ./ts-config:/config
+        command:                 "tsc --project /workspace --outDir /output --watch --pretty true"        
 
+    # Base de datos
+    # La carpeta /docker-entrypoint-initdb.d debe poseer los archivos *.sql que quieran
+    # ejecutarse ni bien arranque el container para generar la base de datos
+    # La carpeta /var/lib/mysql es la carpeta donde efectivamente se crean los archivos
+    # que forman la base de datos. Si la carpeta "data" no existe entonces, la imagen
+    # efectivamente ejecuta el script encontrado y crea la base. Si por el contrario la carpeta
+    # existe la imagen asume que el script fue ejecutado antes y que el contenido de data ya es
+    # la base
     mysql-server:
         image:                   mysql:5.7
         hostname:                mysql-server
         environment:
-            MYSQL_ROOT_PASSWORD: userpass
+            MYSQL_ROOT_PASSWORD: userpass # password del root user de mysql
         volumes:
             -                    ./db/dumps:/docker-entrypoint-initdb.d
             -                    ./db/data:/var/lib/mysql
         networks:
             -                    app-fullstack-net
 
+    # Adminstrador WEB de la base de datos
     mysql-admin:
         image:                   phpmyadmin/phpmyadmin
         environment: 
             PMA_HOST:            mysql-server
             PMA_PORT:            3306
-            MYSQL_ROOT_PASSWORD: userpass
+            MYSQL_ROOT_PASSWORD: userpass  # password del root para el adminstrador web { user , pass} = { root, userpass}
         networks:
             -                    app-fullstack-net
         depends_on:
             -                    mysql-server
         ports:
             -                    "8001:80"
-
+    # Backend
     node-backend:
         image:                   abassi/nodejs-server:10.0-dev
         volumes:
